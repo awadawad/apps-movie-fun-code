@@ -7,10 +7,7 @@ if [ -z $MOVIE_FUN_URL ]; then
   exit 1
 fi
 
-echo "Installing CURL"
-apt-get update && apt-get install -y curl
-
-pushd attendee-service-source
+pushd movie-fun-source
   echo "Running smoke tests for Attendee Service deployed at $MOVIE_FUN_URL"
   mvn test
 popd
