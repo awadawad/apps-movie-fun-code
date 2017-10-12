@@ -28,3 +28,14 @@ jobs:
     params:
       manifest: movie-fun-source/manifest.yml
       path: package-output/movie-fun.war
+
+- name: smoke_test
+  public: true
+  plan:
+  - get: movie-fun-source
+    trigger: true
+    passed: [deploy]
+  - task: smoke_test
+    file: movie-fun-source/ci/tasks/smoke-test.yml
+    params:
+      MOVIE_FUN_URL: http://movie-fun-vacatable-earphone.apps.cumuluslabs.io/ #<---- REPLACE ME
