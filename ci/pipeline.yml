@@ -1,0 +1,30 @@
+---
+resources:
+- name: movie-fun-source
+  type: git
+  source:
+    uri: https://github.com/awadawad/apps-movie-fun-code  #<---- REPLACE ME
+    branch: spring-boot
+
+- name: deploy-movie-fun
+  type: cf
+  source:
+    api: api.system.cumuluslabs.io        #<---- REPLACE ME
+    username: {{cf-user}}
+    password: {{cf-password}}
+    organization: aawad-pal    #<---- REPLACE ME
+    space: sandbox         #<---- REPLACE ME
+    skip_cert_check: true
+
+jobs:
+- name: deploy
+  public: true
+  plan:
+  - get: movie-fun-source
+    trigger: true
+  - task: package
+    file: movie-fun-source/ci/tasks/package.yml
+  - put: deploy-movie-fun
+    params:
+      manifest: movie-fun-source/manifest.yml
+      path: package-output/movie-fun.jar
